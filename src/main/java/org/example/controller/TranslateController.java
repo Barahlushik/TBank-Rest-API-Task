@@ -4,8 +4,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.example.req.TranslateRequest;
 import org.example.resp.TranslateResponse;
-import org.example.service.TranslateService;
+
+import org.example.service.translate.Translator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,14 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class TranslateController {
 
     @Autowired
-    private TranslateService translateService;
-
-
+    @Qualifier("cachedYandexTranslateService")
+    private Translator translateService;
 
     @PostMapping
     public ResponseEntity<TranslateResponse> translate(@Valid @RequestBody TranslateRequest request, HttpServletRequest httpRequest) {
         try {
-            String translatedText = translateService.translate(request, httpRequest);
+            request.setRemoteAddress(httpRequest.getRemoteAddr());
+            String translatedText = translateService.translate(request);
             return ResponseEntity.ok(new TranslateResponse(translatedText));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)

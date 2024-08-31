@@ -6,10 +6,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
-public class TokenServiceConfiguration {
+public class ServiceConfiguration {
 
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
+
+
+
 }

@@ -1,5 +1,6 @@
 package org.example.req;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotEmpty;
 
 
@@ -14,6 +15,33 @@ public class TranslateRequest {
 
     @NotEmpty(message = "Text cannot be empty")
     private String text;
+
+    @JsonIgnore
+    private String remoteAddress;
+
+    public TranslateRequest(String sourceLang, String targetLang, String text) {
+        this.sourceLang = sourceLang;
+        this.targetLang = targetLang;
+        this.text = text;
+    }
+
+    public TranslateRequest(String sourceLang, String targetLang, String text, String remoteAddress) {
+        this.sourceLang = sourceLang;
+        this.targetLang = targetLang;
+        this.text = text;
+        this.remoteAddress = remoteAddress;
+    }
+
+    public TranslateRequest() {
+    }
+
+    public String getRemoteAddress() {
+        return remoteAddress;
+    }
+
+    public void setRemoteAddress(String remoteAddress) {
+        this.remoteAddress = remoteAddress;
+    }
 
     public String getSourceLang() {
         return sourceLang;
