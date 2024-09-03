@@ -1,7 +1,6 @@
 package org.example.repository;
 
-import org.example.repository.datasource.DatabaseConfig;
-import org.example.req.TranslationRequestLog;
+import org.example.model.TranslationRequestLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

@@ -2,8 +2,8 @@ package org.example.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.example.req.TranslateRequest;
-import org.example.resp.TranslateResponse;
+import org.example.model.TranslateRequest;
+import org.example.model.TranslateResponse;
 
 import org.example.service.translate.Translator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +25,8 @@ public class TranslateController {
 
     @PostMapping
     public ResponseEntity<TranslateResponse> translate(@Valid @RequestBody TranslateRequest request, HttpServletRequest httpRequest) {
-        try {
             request.setRemoteAddress(httpRequest.getRemoteAddr());
             String translatedText = translateService.translate(request);
             return ResponseEntity.ok(new TranslateResponse(translatedText));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new TranslateResponse("Не найден язык исходного сообщения"));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new TranslateResponse("Ошибка доступа к ресурсу перевода"));
-        }
     }
 }

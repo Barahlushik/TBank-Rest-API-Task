@@ -1,8 +1,8 @@
 package org.example.service.translate.impl;
 
 import org.example.repository.TranslationRequestLogRepository;
-import org.example.req.TranslateRequest;
-import org.example.req.TranslationRequestLog;
+import org.example.model.TranslateRequest;
+import org.example.model.TranslationRequestLog;
 import org.example.service.TokenService;
 import org.example.service.translate.Translator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,8 @@ public class YandexTranslateService implements Translator {
         Map<String, Object> body = new HashMap<>();
         body.put("folderId", folderId);
         body.put("texts", new String[]{request.getText()});
-        body.put("targetLanguageCode", "ru");
+        body.put("targetLanguageCode", request.getTargetLang());
+        body.put("sourceLanguageCode", request.getSourceLang());
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
         ResponseEntity<Map> response = restTemplate.exchange(apiUrl, HttpMethod.POST, entity, Map.class);
         if (response.getStatusCode() != HttpStatus.OK || !response.getBody().containsKey("translations")) {

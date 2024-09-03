@@ -1,6 +1,9 @@
 package org.example.service.translate.impl;
 
-import org.example.req.TranslateRequest;
+import org.example.exception.SourceLanguageNotFoundException;
+import org.example.exception.TargetLanguageNotFoundException;
+import org.example.model.TranslateRequest;
+import org.example.service.AvailableLanguageLoader;
 import org.example.service.translate.Translator;
 import org.example.service.translate.cache.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,23 +22,32 @@ public class CachedYandexTranslateService implements Translator {
 
     private final Translator translatorService;
 
-    @Autowired
-    @Qualifier("LRUCache")
-    private Cache<String,String> cache;
+    private final Cache<String,String> cache;
 
     private final ExecutorService executorService;
 
+    private final AvailableLanguageLoader availLangs;
+
     public CachedYandexTranslateService(@Qualifier("yandexTranslateService") Translator translatorService,
-                                        @Value("${yandex.translate.thread.pool-size}") int poolSize) {
+                                        @Qualifier("LRUCache")Cache<String,String> cache,
+                                        @Value("${yandex.translate.thread.pool-size}") int poolSize,
+                                        AvailableLanguageLoader availLangs) {
         this.translatorService = translatorService;
         this.executorService = Executors.newFixedThreadPool(poolSize);
+        this.availLangs=availLangs;
+        this.cache=cache;
     }
 
     @Override
     public String translate(TranslateRequest request) {
         String[] words = request.getText().split("\\s+");
         List<Future<String>> futures = new ArrayList<>();
-
+        if (!availLangs.isLanguageSupported(request.getSourceLang())) {
+            throw new SourceLanguageNotFoundException("Не найден язык исходного сообщения");
+        }
+        if (!availLangs.isLanguageSupported(request.getTargetLang())) {
+            throw new TargetLanguageNotFoundException("Не найден язык для перевода сообщения");
+        }
         for (String word : words) {
             Future<String> future = executorService.submit(() -> translateWord(new TranslateRequest(request.getSourceLang(), request.getTargetLang(), word, request.getRemoteAddress())));
             futures.add(future);

@@ -1,4 +1,4 @@
-package org.example.req;
+package org.example.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotEmpty;
@@ -7,10 +7,9 @@ import jakarta.validation.constraints.NotEmpty;
 
 public class TranslateRequest {
 
-    @NotEmpty(message = "Source language cannot be empty")
+
     private String sourceLang;
 
-    @NotEmpty(message = "Target language cannot be empty")
     private String targetLang;
 
     @NotEmpty(message = "Text cannot be empty")

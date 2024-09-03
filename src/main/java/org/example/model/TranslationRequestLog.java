@@ -1,4 +1,4 @@
-package org.example.req;
+package org.example.model;
 
 import java.time.LocalDateTime;
 

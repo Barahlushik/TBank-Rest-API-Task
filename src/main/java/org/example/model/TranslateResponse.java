@@ -1,4 +1,4 @@
-package org.example.resp;
+package org.example.model;
 
 public class TranslateResponse {
 

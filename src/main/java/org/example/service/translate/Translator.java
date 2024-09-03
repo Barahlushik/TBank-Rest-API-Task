@@ -1,6 +1,6 @@
 package org.example.service.translate;
 
-import org.example.req.TranslateRequest;
+import org.example.model.TranslateRequest;
 
 public interface Translator {
 
