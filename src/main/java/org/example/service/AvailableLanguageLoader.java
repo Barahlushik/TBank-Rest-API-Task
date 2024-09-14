@@ -50,11 +50,11 @@ public class AvailableLanguageLoader {
             body.put("folderId", folderId);
             HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
             ResponseEntity<AvailableLanguageResponse> response = restTemplate.exchange(LANGUAGES_URL, HttpMethod.POST, entity, AvailableLanguageResponse.class);
-            if (response.getBody().getLanguages() != null) {
+            if (response.getBody().languages() != null) {
                 Map<String, String> newLanguages = new ConcurrentHashMap<>();
-                for (AvailableLanguage language : response.getBody().getLanguages()) {
-                    if (language.getCode() != null && language.getName() != null) {
-                        newLanguages.put(language.getCode(), language.getName());
+                for (AvailableLanguage language : response.getBody().languages()) {
+                    if (language.code() != null && language.name() != null) {
+                        newLanguages.put(language.code(), language.name());
                     }
                 }
                 availableLanguages = newLanguages;
@@ -65,7 +65,7 @@ public class AvailableLanguageLoader {
     }
 
     public boolean isLanguageSupported(String languageCode) {
-        return availableLanguages.containsKey(languageCode);
+        return languageCode != null && availableLanguages.containsKey(languageCode);
     }
 
 

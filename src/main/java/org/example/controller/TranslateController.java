@@ -6,6 +6,8 @@ import org.example.model.TranslateRequest;
 import org.example.model.TranslateResponse;
 
 import org.example.service.translate.Translator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/translate")
 public class TranslateController {
 
+
+    private static final Logger logger = LoggerFactory.getLogger(TranslateController.class);
+
     @Autowired
     @Qualifier("cachedYandexTranslateService")
     private Translator translateService;
@@ -26,7 +31,10 @@ public class TranslateController {
     @PostMapping
     public ResponseEntity<TranslateResponse> translate(@Valid @RequestBody TranslateRequest request, HttpServletRequest httpRequest) {
             request.setRemoteAddress(httpRequest.getRemoteAddr());
-            String translatedText = translateService.translate(request);
+
+        logger.info("Received translation request from IP: {}, SL: {}, TL: {}",
+                httpRequest.getRemoteAddr(), request.getSourceLang(), request.getTargetLang());
+        String translatedText = translateService.translate(request);
             return ResponseEntity.ok(new TranslateResponse(translatedText));
     }
 }
