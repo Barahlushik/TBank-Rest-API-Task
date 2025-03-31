@@ -5,10 +5,13 @@ import org.example.service.translate.impl.CachedYandexTranslateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
@@ -31,8 +34,9 @@ public class DatabaseInitializer {
     private void initializeDatabase()  {
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
-            String schemaSql = new String(Files.readAllBytes(Paths.get(dbInitScript)));
-            statement.execute(schemaSql);
+            InputStream inputStream = new ClassPathResource("sql/schema.sql").getInputStream();
+            String sql = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+            statement.execute(sql);
             logger.info("База данных успешно инициализирована с использованием скрипта: '{}'", dbInitScript);
         } catch (SQLException | IOException e) {
             logger.error("Ошибка при инициализации базы данных с использованием скрипта: '{}'. Ошибка: {}", dbInitScript, e.getMessage(), e);

@@ -9,9 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 public class TranslationServiceApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(TranslationServiceApplication.class, args);
     }
-
 }

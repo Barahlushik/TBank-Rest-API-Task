@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="theme-color" content="#121212">
+    <meta name="msapplication-navbutton-color" content="#121212">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#121212">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translation Service | T-Bank</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/css/main.css}" rel="stylesheet">
+
+</head>
+<body>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="mb-4 text-center">T-Bank Translation Service</h1>
+
+            <form id="translateForm">
+                <div class="mb-3">
+                    <label for="sourceText" class="form-label">Text to translate</label>
+                    <textarea class="form-control" id="sourceText" rows="5"
+                              th:field="*{translateRequest.text}" required></textarea>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="sourceLang" class="form-label">Source Language</label>
+                        <select class="form-select" id="sourceLang" th:field="*{translateRequest.sourceLang}">
+                            <option value="">Auto-detect</option>
+                            <option th:each="lang : ${languages}"
+                                    th:value="${lang.key}"
+                                    th:text="${lang.value}"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="targetLang" class="form-label">Target Language</label>
+                        <select class="form-select" id="targetLang" th:field="*{translateRequest.targetLang}" required>
+                            <option th:each="lang : ${languages}"
+                                    th:value="${lang.key}"
+                                    th:text="${lang.value}"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Translate</button>
+            </form>
+
+            <div class="mt-4">
+                <h5>Translation Result</h5>
+                <div id="translationResult" class="translation-box"></div>
+                <div id="errorResult" class="error-box"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+:root {
+    --tbank-gold: #FFD700;
+    --tbank-gold-light: #FFEE32;
+    --tbank-dark: #121212;
+    --tbank-darker: #0A0A0A;
+    --tbank-gray: #2A2A2A;
+    --tbank-error: #FF4D4D;
+}
+
+body {
+    background-color: var(--tbank-dark);
+    color: var(--tbank-gold);
+    min-height: 100vh;
+}
+
+.container {
+    background-color: var(--tbank-darker);
+    padding: 2rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--tbank-gold);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.translation-box {
+    min-height: 150px;
+    border: 2px solid var(--tbank-gold);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    background-color: var(--tbank-gray);
+    color: var(--tbank-gold-light);
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.translation-box:hover {
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
+.error-box {
+    color: var(--tbank-error);
+    margin-top: 1rem;
+    font-weight: bold;
+    background-color: rgba(255, 77, 77, 0.1);
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+}
+
+.btn-primary {
+    background-color: var(--tbank-gold);
+    border-color: var(--tbank-gold);
+    color: var(--tbank-dark);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--tbank-gold-light);
+    border-color: var(--tbank-gold-light);
+    color: var(--tbank-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 215, 0, 0.3);
+}
+
+.form-control, .form-select {
+    background-color: var(--tbank-gray);
+    border: 1px solid var(--tbank-gold);
+    color: var(--tbank-gold-light);
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: var(--tbank-gray);
+    border-color: var(--tbank-gold-light);
+    color: var(--tbank-gold-light);
+    box-shadow: 0 0 0 0.25rem rgba(255, 215, 0, 0.25);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--tbank-gold);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+h1 {
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 25%;
+    width: 50%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--tbank-gold), transparent);
+}
+
+.form-label {
+    color: var(--tbank-gold-light);
+    font-weight: 500;
+}
+
+/* Анимация загрузки */
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+.loading {
+    animation: pulse 1.5s infinite;
+    text-align: center;
+}

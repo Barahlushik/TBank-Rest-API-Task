@@ -2,6 +2,7 @@ package org.example.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.example.exception.ErrorResponse;
 import org.example.model.TranslateRequest;
 import org.example.model.TranslateResponse;
 
@@ -29,12 +30,18 @@ public class TranslateController {
     private Translator translateService;
 
     @PostMapping
-    public ResponseEntity<TranslateResponse> translate(@Valid @RequestBody TranslateRequest request, HttpServletRequest httpRequest) {
-            request.setRemoteAddress(httpRequest.getRemoteAddr());
-
-        logger.info("Received translation request from IP: {}, SL: {}, TL: {}",
-                httpRequest.getRemoteAddr(), request.getSourceLang(), request.getTargetLang());
-        String translatedText = translateService.translate(request);
-            return ResponseEntity.ok(new TranslateResponse(translatedText));
+    public ResponseEntity<?> translate(@Valid @RequestBody TranslateRequest request, HttpServletRequest httpRequest) {
+           try {
+               request.setRemoteAddress(httpRequest.getRemoteAddr());
+               logger.info("Received translation request from IP: {}, SL: {}, TL: {}",
+                       httpRequest.getRemoteAddr(), request.getSourceLang(), request.getTargetLang());
+               String translatedText = translateService.translate(request);
+               return ResponseEntity.ok(new TranslateResponse(translatedText));
+           }  catch (Exception e) {
+               logger.error("Translation failed for request from IP: {}", httpRequest.getRemoteAddr(), e);
+               return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                       .body(new ErrorResponse("Translation failed: " + e.getMessage()));
+           }
     }
+
 }

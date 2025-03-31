@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  translator:
+    build: .
+    image: translator-app:latest
+    container_name: translator
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./config:/app/config  # для кастомных конфигов
+      - ./logs:/var/log/translator  # для сохранения логов
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    restart: unless-stopped
