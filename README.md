@@ -37,5 +37,28 @@ Hello world, this is my first program
 ```
 Пример 3: http 400 Ошибка доступа к ресурсу перевода
 ```
+# Для запуска необходимо
 
+- Java 17+
+- Docker (опционально)
+- Yandex Cloud API ключи
 
+## Получение API ключей
+
+1. **Зарегистрируйтесь в Yandex Cloud.**  
+2. **Создайте сервисный аккаунт и получите:**
+   - `yandex.translate.api.folder-id`
+   - `yandex.translate.api.oauth-token`
+3. **Добавьте эти значения в `src/main/resources/application.properties`:**
+
+```application.properties
+yandex.translate.api.folder-id=your-folder-id
+yandex.translate.api.oauth-token=your-oauth-token
+```
+## Запуск 
+1. **через Docker** 
+Используя docker-compose:
+
+```bash
+docker-compose up --build
+```
